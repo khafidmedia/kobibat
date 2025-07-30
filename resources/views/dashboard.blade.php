@@ -231,6 +231,8 @@
             <h5>" Koperasi Bisa Hebat "</h5>
         </div>
         <a href="#">Dashboard</a>
+        <a href="{{ route('articles.index') }}">Article</a>
+
     </div>
 
 
