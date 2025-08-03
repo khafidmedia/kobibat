@@ -231,10 +231,9 @@
             <h5>" Koperasi Bisa Hebat "</h5>
         </div>
         <a href="#">Dashboard</a>
-        <a href="{{ route('articles.index') }}">Article</a>
-
+        <a href="{{ route('articles.index') }}">Artikel</a>
+        <a href="{{ route('pendaftaran.index') }}">Kelola Anggota</a>
     </div>
-
 
     <div class="main">
         <div class="header">
@@ -487,26 +486,21 @@
         });
 
         const getColorByValue = (value) => {
-            // value: 1–100
-            // Merah (#e74c3c) → Kuning (#f1c40f) → Hijau (#2ecc71)
-
             let r, g, b;
 
             if (value < 50) {
-                // Merah ke Kuning (0–49%)
                 const ratio = value / 50;
                 r = 231;
-                g = Math.round(76 + (196 - 76) * ratio); // 76 → 196
+                g = Math.round(76 + (196 - 76) * ratio);
                 b = 60;
             } else {
-                // Kuning ke Hijau (50–100%)
                 const ratio = (value - 50) / 50;
-                r = Math.round(241 - (241 - 46) * ratio); // 241 → 46
-                g = Math.round(196 + (204 - 196) * ratio); // 196 → 204
-                b = Math.round(15 + (113 - 15) * ratio); // 15 → 113
+                r = Math.round(241 - (241 - 46) * ratio);
+                g = Math.round(196 + (204 - 196) * ratio);
+                b = Math.round(15 + (113 - 15) * ratio);
             }
 
-            return `rgb(${r}, ${g}, ${b})`;
+            return `rgb(${r}, ${g}, ${b})`; // <-- ini diperbaiki
         };
 
         const donutChart = (id, value) => {

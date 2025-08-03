@@ -1,111 +1,47 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login Administrator</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
-  <style>
-    * {
-      box-sizing: border-box;
-      font-family: 'Inter', sans-serif;
-      margin: 0;
-      padding: 0;
-    }
-    body {
-      display: flex;
-      height: 100vh;
-      overflow: hidden;
-    }
-    .left {
-      width: 40%;
-      background: white;
-      padding: 60px 40px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
-    .left h2 {
-      font-size: 26px;
-      margin-bottom: 10px;
-    }
-    .left p {
-      margin-bottom: 30px;
-      color: #555;
-    }
-    .left form {
-      display: flex;
-      flex-direction: column;
-    }
-    .left label {
-      font-size: 14px;
-      margin-bottom: 5px;
-    }
-    .left input[type="text"],
-    .left input[type="password"] {
-      padding: 12px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      margin-bottom: 20px;
-    }
-    .left button {
-      padding: 12px;
-      background: #8a5be1;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      font-weight: 600;
-      cursor: pointer;
-      margin-top: 10px;
-    }
-    .left a {
-      font-size: 14px;
-      margin-top: 15px;
-      color: #888;
-      text-decoration: none;
-    }
-    .right {
-      width: 60%;
-      background: linear-gradient(90deg, #6a11cb 0%, #2575fc 100%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .right img {
-  width: 100%;
-  height: 100vh;
-  object-fit: cover;
-}
+{{-- <x-guest-layout>
+    <!-- Session Status -->
+    <x-auth-session-status class="mb-4" :status="session('status')" />
 
-    @media(max-width: 768px) {
-      .right {
-        display: none;
-      }
-      .left {
-        width: 100%;
-      }
-    }
-  </style>
-</head>
-<body>
-  <div class="left">
-    <img src="{{ asset('smk.jpg') }}" alt="Logo" style="width:150px; margin-bottom: 30px;">
-    <h2>Login Administrator</h2>
-    <p>Selamat Datang Admin</p>
     <form method="POST" action="{{ route('login') }}">
-      @csrf
-      <label for="email">Nama Pengguna*</label>
-      <input type="text" name="email" id="email" required autofocus>
+        @csrf
 
-      <label for="password">Kata Sandi*</label>
-      <input type="password" name="password" id="password" required>
+        <!-- Email Address -->
+        <div>
+            <x-input-label for="email" :value="__('Email')" />
+            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
+            <x-input-error :messages="$errors->get('email')" class="mt-2" />
+        </div>
 
-      <button type="submit">MASUK DI ADMINISTRATOR</button>
+        <!-- Password -->
+        <div class="mt-4">
+            <x-input-label for="password" :value="__('Password')" />
+
+            <x-text-input id="password" class="block mt-1 w-full"
+                            type="password"
+                            name="password"
+                            required autocomplete="current-password" />
+
+            <x-input-error :messages="$errors->get('password')" class="mt-2" />
+        </div>
+
+        <!-- Remember Me -->
+        <div class="block mt-4">
+            <label for="remember_me" class="inline-flex items-center">
+                <input id="remember_me" type="checkbox" class="rounded dark:bg-gray-900 border-gray-300 dark:border-gray-700 text-indigo-600 shadow-sm focus:ring-indigo-500 dark:focus:ring-indigo-600 dark:focus:ring-offset-gray-800" name="remember">
+                <span class="ms-2 text-sm text-gray-600 dark:text-gray-400">{{ __('Remember me') }}</span>
+            </label>
+        </div>
+
+        <div class="flex items-center justify-end mt-4">
+            @if (Route::has('password.request'))
+                <a class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800" href="{{ route('password.request') }}">
+                    {{ __('Forgot your password?') }}
+                </a>
+            @endif
+
+            <x-primary-button class="ms-3">
+                {{ __('Log in') }}
+            </x-primary-button>
+        </div>
     </form>
-    <a href="{{ url('/') }}">← Kembali ke halaman depan</a>
-  </div>
-  <div class="right">
-    <img src="{{ asset('admin.jpg') }}" alt="Admin Illustration">
-  </div>
-</body>
-</html>
+</x-guest-layout> --}}
