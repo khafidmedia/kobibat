@@ -1,4 +1,4 @@
-@extends('layout')
+@extends('layouts.user')
 
 @section('content')
 <style>

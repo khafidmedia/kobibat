@@ -52,8 +52,8 @@
                 <ul class="navbar-nav navbar-center gap-3">
                     <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
                     <li class="nav-item"><a class="nav-link" href="#">SHU</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ url('/simpanan') }}">Simpan</a></li> 
-                    <li class="nav-item"><a class="nav-link" href="#">Pinjaman</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url('/simpanan') }}">Simpan</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url('/user/pinjaman/ajukan')}}">Pinjaman</a></li>
                     <li class="nav-item"><a class="nav-link" href="#">Kas Masuk</a></li>
                     <li class="nav-item"><a class="nav-link" href="#">Live Chat</a></li>
                 </ul>

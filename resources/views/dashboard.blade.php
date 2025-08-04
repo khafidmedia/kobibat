@@ -234,7 +234,7 @@
         <a href="{{ route('articles.index') }}">Artikel</a>
         <a href="{{ route('pendaftaran.index') }}">Kelola Anggota</a>
         <a href="{{ route('admin.simpanan') }}">Simpanan</a>
-
+        <a href="{{ route('admin.pinjaman.index') }}">Pinjaman</a>
     </div>
 
     <div class="main">

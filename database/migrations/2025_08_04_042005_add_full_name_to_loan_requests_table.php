@@ -9,21 +9,20 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-   public function up(): void
-{
-    Schema::table('simpanans', function (Blueprint $table) {
-$table->enum('status', ['pending', 'disetujui', 'ditolak'])->default('pending');
-    });
-}
-
+    public function up(): void
+    {
+        Schema::table('loan_requests', function (Blueprint $table) {
+            $table->string('full_name')->nullable()->after('user_id');
+        });
+    }
 
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::table('simpanans', function (Blueprint $table) {
-            //
+        Schema::table('loan_requests', function (Blueprint $table) {
+            $table->dropColumn('full_name');
         });
     }
 };
