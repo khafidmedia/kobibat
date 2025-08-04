@@ -11,11 +11,16 @@
       height: 100%;
       margin: 0;
       padding: 0;
-      overflow: hidden;
     }
 
     .container-fluid {
       height: 100vh;
+    }
+
+    nav.navbar {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
     }
 
     .split-left {
@@ -97,6 +102,31 @@
   </style>
 </head>
 <body>
+
+  <!-- ✅ Navigasi Publik -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-light px-4 shadow-sm">
+    <a class="navbar-brand fw-bold text-primary" href="{{ url('/') }}">Koperasi Bisa-Hebat</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url('/') }}">Beranda</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{ route('articles.index') }}">Artikel</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#tentang">Tentang</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ✅ Konten Login -->
   <div class="container-fluid">
     <div class="row g-0 h-100">
       <!-- KIRI: FORM LOGIN -->
@@ -134,4 +164,4 @@
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-</html>
+</
