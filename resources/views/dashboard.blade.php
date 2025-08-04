@@ -233,6 +233,8 @@
         <a href="#">Dashboard</a>
         <a href="{{ route('articles.index') }}">Artikel</a>
         <a href="{{ route('pendaftaran.index') }}">Kelola Anggota</a>
+        <a href="{{ route('admin.simpanan') }}">Simpanan</a>
+
     </div>
 
     <div class="main">
