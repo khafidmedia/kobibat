@@ -12,26 +12,45 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
     protected $fillable = [
         'name',
         'email',
         'password',
         'location',
         'phone',
-        'profile_photo_path', // ✅ Pastikan pakai "_path" (standar Laravel)
+        'profile_photo_path', // ✅ pastikan kolom ini ada di database
     ];
 
+    /**
+     * The attributes that should be hidden for serialization.
+     *
+     * @var array<int, string>
+     */
     protected $hidden = [
         'password',
         'remember_token',
     ];
 
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array<string, string>
+     */
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
 
-    // ✅ Accessor untuk URL gambar profil
+    /**
+     * Get the full URL for the user's profile photo.
+     *
+     * @return string
+     */
     public function getProfilePhotoUrlAttribute()
     {
         return $this->profile_photo_path

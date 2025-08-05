@@ -8,7 +8,9 @@ use App\Http\Controllers\SimpananController;
 use App\Http\Controllers\Admin\SimpananAdminController;
 use App\Http\Controllers\Admin\LoanRequestAdminController;
 use App\Http\Controllers\Admin\PinjamanController;
+use App\Http\Controllers\ChatController;
 use App\Http\Controllers\User\LoanRequestController;
+use Illuminate\Http\Request;
 
 // ========================
 // DASHBOARD & UMUM
@@ -79,3 +81,39 @@ Route::prefix('user/pinjaman')->name('user.pinjaman.')->group(function () {
         return view('user.pinjaman.syarat');
     })->name('syarat');
 });
+
+// Live chat user
+Route::get('/chat/user', [ChatController::class, 'userChat'])->middleware(['auth', 'verified']);
+
+// Live chat admin
+Route::get('/admin/chat', [ChatController::class, 'adminChat'])->middleware(['auth', 'verified']);
+// Halaman chat user (bebas diakses)
+Route::get('/chat', [ChatController::class, 'userView'])->name('chat.user');
+Route::post('/send-user', [ChatController::class, 'sendUser']);
+
+// Halaman login admin (form password)
+Route::get('/admin', function () {
+    return view('chat.admin_login');
+});
+
+// Proses login admin (cek password)
+Route::post('/admin/login', function (Request $request) {
+    if ($request->password === 'adminkuat123') {
+        session(['admin_authenticated' => true]);
+        return redirect('/admin/chat');
+    }
+    return back()->with('error', 'Password salah');
+});
+
+// Halaman chat admin (hanya jika sudah login)
+Route::get('/admin/chat', function () {
+    if (!session('admin_authenticated')) {
+        abort(403, 'Unauthorized');
+    }
+    return app(ChatController::class)->adminView();
+});
+
+// Chat message routes
+Route::post('/send-admin', [ChatController::class, 'sendAdmin']);
+Route::get('/messages', [ChatController::class, 'getMessages']);
+

@@ -235,6 +235,8 @@
         <a href="{{ route('pendaftaran.index') }}">Kelola Anggota</a>
         <a href="{{ route('admin.simpanan') }}">Simpanan</a>
         <a href="{{ route('admin.pinjaman.index') }}">Pinjaman</a>
+        <a href="{{ route('chat.user') }}">Live Chat</a>
+        
     </div>
 
     <div class="main">
