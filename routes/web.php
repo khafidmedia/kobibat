@@ -11,6 +11,8 @@ use App\Http\Controllers\Admin\PinjamanController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\User\LoanRequestController;
 use Illuminate\Http\Request;
+use App\Http\Controllers\SHUController;
+use App\Http\Controllers\Admin\SHUAdminController;
 
 // ========================
 // DASHBOARD & UMUM
@@ -117,3 +119,9 @@ Route::get('/admin/chat', function () {
 Route::post('/send-admin', [ChatController::class, 'sendAdmin']);
 Route::get('/messages', [ChatController::class, 'getMessages']);
 
+// USER
+Route::get('/shu', [SHUController::class, 'index'])->name('shu.index');
+Route::post('/shu/hitung', [SHUController::class, 'hitung'])->name('shu.hitung');
+
+// ADMIN
+Route::get('/admin/shu', [SHUAdminController::class, 'index'])->name('admin.shu.index');
