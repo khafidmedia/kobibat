@@ -237,6 +237,7 @@
         <a href="{{ route('admin.pinjaman.index') }}">Pinjaman</a>
         <a href="{{ route('chat.user') }}">Live Chat</a>
         <a href="{{ route('admin.shu.index') }}">SHU</a>
+        <a href="{{ route('admin.kas_masuk.index') }}">Kas Masuk</a>
         
     </div>
 

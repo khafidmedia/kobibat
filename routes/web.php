@@ -13,6 +13,15 @@ use App\Http\Controllers\User\LoanRequestController;
 use Illuminate\Http\Request;
 use App\Http\Controllers\SHUController;
 use App\Http\Controllers\Admin\SHUAdminController;
+use App\Http\Controllers\Admin\KasMasukAdminController;
+use App\Http\Controllers\Admin\AnggotaAdminController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\KasKeluarController;
+use App\Http\Controllers\AnggotaController;
+
+
+
 
 // ========================
 // DASHBOARD & UMUM
@@ -125,3 +134,25 @@ Route::post('/shu/hitung', [SHUController::class, 'hitung'])->name('shu.hitung')
 
 // ADMIN
 Route::get('/admin/shu', [SHUAdminController::class, 'index'])->name('admin.shu.index');
+
+// 👤 Anggota untuk User
+Route::prefix('user')->name('user.')->group(function () {
+    Route::resource('anggota', AnggotaController::class);
+    Route::get('/', [UserController::class, 'index'])->name('index');
+});
+
+// 📤 Kas Keluar
+Route::get('/kas-keluar', [KasKeluarController::class, 'index'])->name('kas-keluar.index');
+
+// 🧑‍💼 ROUTE UNTUK ADMIN
+Route::prefix('admin')->name('admin.')->group(function () {
+    Route::get('/', [AdminController::class, 'index'])->name('index');
+    Route::resource('kas_masuk', KasMasukAdminController::class);
+    Route::resource('anggota', AnggotaAdminController::class);
+});
+Route::get('/kas_masuk/create', [AnggotaController::class, 'create'])->name('kas_masuk.create');
+
+
+Route::resource('anggota', AnggotaController::class);
+
+Route::get('/admin/kas_masuk', [KasMasukAdminController::class, 'index'])->name('admin.kas_masuk.index');

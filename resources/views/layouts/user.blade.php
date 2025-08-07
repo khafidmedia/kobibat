@@ -56,7 +56,7 @@
         <li class="nav-item"><a class="nav-link" href="{{ url('/shu') }}">SHU</a></li>
         <li class="nav-item"><a class="nav-link" href="{{ url('/simpanan') }}">Simpan</a></li>
         <li class="nav-item"><a class="nav-link" href="{{ url('/user/pinjaman/ajukan') }}">Pinjaman</a></li>
-        <li class="nav-item"><a class="nav-link" href="#">Kas Masuk</a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ url('/anggota/index') }}">Kas Masuk</a></li>
 
         <!-- Live Chat dinamis -->
         @auth
