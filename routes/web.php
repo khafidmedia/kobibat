@@ -1,40 +1,50 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ArticleController;
-use App\Http\Controllers\PendaftaranController;
-use App\Http\Controllers\AdminDashboardController;
-use App\Http\Controllers\SimpananController;
-use App\Http\Controllers\Admin\SimpananAdminController;
-use App\Http\Controllers\Admin\LoanRequestAdminController;
-use App\Http\Controllers\Admin\PinjamanController;
-use App\Http\Controllers\ChatController;
-use App\Http\Controllers\User\LoanRequestController;
 use Illuminate\Http\Request;
-use App\Http\Controllers\SHUController;
-use App\Http\Controllers\Admin\SHUAdminController;
-use App\Http\Controllers\Admin\KasMasukAdminController;
-use App\Http\Controllers\Admin\AnggotaAdminController;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\Admin\AdminController;
-use App\Http\Controllers\KasKeluarController;
-use App\Http\Controllers\AnggotaController;
+use App\Http\Controllers\{
+    ArticleController,
+    PendaftaranController,
+    SimpananController,
+    ChatController,
+    SHUController,
+    UserController,
+    AnggotaController,
+    KasMasukController,
+    ProfileController
+};
+use App\Http\Controllers\User\LoanRequestController;
+use App\Http\Controllers\Admin\{
+    SimpananAdminController,
+    LoanRequestAdminController,
+    PinjamanController,
+    SHUAdminController,
+    KasMasukAdminController,
+    AnggotaAdminController,
+    AdminController
+};
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
 
+/*
+|--------------------------------------------------------------------------
+| ROUTE UMUM
+|--------------------------------------------------------------------------
+*/
 
+// Root redirect ke login custom
+Route::get('/', fn() => redirect()->route('login.custom'));
 
+// Login Custom View
+Route::get('/login-custom', fn() => view('layouts.navigation'))->name('login.custom');
 
-// ========================
-// DASHBOARD & UMUM
-// ========================
-Route::get('/', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
+// Login proses
+Route::post('/login', [AuthenticatedSessionController::class, 'store'])->name('login');
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->name('dashboard');
+// Halaman SHU umum
+Route::get('/shu', [SHUController::class, 'index'])->name('shu.index');
+Route::post('/shu/hitung', [SHUController::class, 'hitung'])->name('shu.hitung');
 
-// ========================
-// ARTIKEL (TANPA LOGIN)
-// ========================
+// Artikel (tanpa login)
 Route::prefix('articles')->name('articles.')->group(function () {
     Route::get('/', [ArticleController::class, 'index'])->name('index');
     Route::get('/create', [ArticleController::class, 'create'])->name('create');
@@ -46,33 +56,75 @@ Route::prefix('articles')->name('articles.')->group(function () {
     Route::post('/like/{article}', [ArticleController::class, 'like'])->name('like');
 });
 
-// ========================
-// PENDAFTARAN (ADMIN)
-// ========================
+// Chat umum (bebas diakses)
+Route::get('/chat', [ChatController::class, 'userView'])->name('chat.user');
+Route::post('/send-user', [ChatController::class, 'sendUser']);
+Route::post('/send-admin', [ChatController::class, 'sendAdmin']);
+Route::get('/messages', [ChatController::class, 'getMessages']);
+
+/*
+|--------------------------------------------------------------------------
+| ROUTE USER (HARUS LOGIN)
+|--------------------------------------------------------------------------
+*/
+
+Route::middleware(['auth', 'verified'])->group(function () {
+    // Dashboard
+    Route::get('/dashboard', fn() => view('dashboard'))->name('dashboard');
+    Route::get('/user/home', fn() => view('layouts.user'))->name('layouts.user');
+
+    // Profile
+    Route::get('/profile', [ProfileController::class, 'show'])->name('profile');
+});
+
+Route::middleware('auth')->group(function () {
+    Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+// Simpanan User
+Route::get('/simpanan', [SimpananController::class, 'index'])->name('simpanan.index');
+Route::get('/simpanan/create', [SimpananController::class, 'create'])->name('simpanan.create');
+Route::post('/simpanan/store', [SimpananController::class, 'store'])->name('simpanan.store');
+Route::get('/user/simpanan', [SimpananController::class, 'userSimpanan'])->name('user.simpanan');
+
+// Pinjaman User
+Route::prefix('user/pinjaman')->name('user.pinjaman.')->group(function () {
+    Route::get('/ajukan', [LoanRequestController::class, 'create'])->name('create');
+    Route::post('/ajukan', [LoanRequestController::class, 'store'])->name('store');
+    Route::get('/riwayat', [LoanRequestController::class, 'riwayat'])->name('riwayat');
+    Route::get('/syarat', fn() => view('user.pinjaman.syarat'))->name('syarat');
+});
+
+// Anggota untuk User
+Route::prefix('user')->name('user.')->group(function () {
+    Route::resource('anggota', AnggotaController::class);
+    Route::get('/', [UserController::class, 'index'])->name('index');
+});
+
+// Live chat user
+Route::get('/chat/user', [ChatController::class, 'userChat'])->middleware(['auth', 'verified']);
+
+/*
+|--------------------------------------------------------------------------
+| ROUTE ADMIN
+|--------------------------------------------------------------------------
+*/
+
+// Pendaftaran Admin
 Route::prefix('admin')->name('pendaftaran.')->group(function () {
     Route::get('/pendaftaran', [PendaftaranController::class, 'index'])->name('index');
     Route::get('/pendaftaran/create', [PendaftaranController::class, 'create'])->name('create');
     Route::post('/pendaftaran', [PendaftaranController::class, 'store'])->name('store');
 });
 
-// ========================
-// SIMPANAN USER
-// ========================
-Route::get('/simpanan', [SimpananController::class, 'index'])->name('simpanan.index');
-Route::get('/simpanan/create', [SimpananController::class, 'create'])->name('simpanan.create');
-Route::post('/simpanan/store', [SimpananController::class, 'store'])->name('simpanan.store');
-Route::get('/user/simpanan', [SimpananController::class, 'userSimpanan'])->name('user.simpanan');
-
-// ========================
-// SIMPANAN ADMIN
-// ========================
+// Simpanan Admin
 Route::get('/admin/simpanan', [SimpananAdminController::class, 'index'])->name('admin.simpanan');
 Route::get('/admin/simpanan/{id}', [SimpananAdminController::class, 'show'])->name('admin.simpanan.show');
 Route::put('/admin/simpanan/verifikasi/{id}/{status}', [SimpananAdminController::class, 'verifikasi'])->name('admin.simpanan.verifikasi');
 
-// ========================
-// PINJAMAN ADMIN
-// ========================
+// Pinjaman Admin
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/pinjaman', [LoanRequestAdminController::class, 'index'])->name('pinjaman.index');
     Route::get('/pinjaman/{id}', [LoanRequestAdminController::class, 'show'])->name('pinjaman.show');
@@ -81,33 +133,26 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/riwayat-pinjaman', [PinjamanController::class, 'riwayat'])->name('pinjaman.riwayat');
 });
 
-// ========================
-// PINJAMAN USER
-// ========================
-Route::prefix('user/pinjaman')->name('user.pinjaman.')->group(function () {
-    Route::get('/ajukan', [LoanRequestController::class, 'create'])->name('create');
-    Route::post('/ajukan', [LoanRequestController::class, 'store'])->name('store');
-    Route::get('/riwayat', [LoanRequestController::class, 'riwayat'])->name('riwayat');
-    Route::get('/syarat', function () {
-        return view('user.pinjaman.syarat');
-    })->name('syarat');
+// SHU Admin
+Route::get('/admin/shu', [SHUAdminController::class, 'index'])->name('admin.shu.index');
+
+// Kas Masuk Admin
+Route::prefix('admin')->name('admin.')->group(function () {
+    Route::get('/kas-masuk', [KasMasukController::class, 'index'])
+        ->name('kas_masuk.index');
 });
 
-// Live chat user
-Route::get('/chat/user', [ChatController::class, 'userChat'])->middleware(['auth', 'verified']);
+
+// Anggota Admin
+Route::resource('admin/anggota', AnggotaAdminController::class);
+
+// Dashboard Admin
+Route::prefix('admin')->name('admin.')->group(function () {
+    Route::get('/', [AdminController::class, 'index'])->name('index');
+});
 
 // Live chat admin
-Route::get('/admin/chat', [ChatController::class, 'adminChat'])->middleware(['auth', 'verified']);
-// Halaman chat user (bebas diakses)
-Route::get('/chat', [ChatController::class, 'userView'])->name('chat.user');
-Route::post('/send-user', [ChatController::class, 'sendUser']);
-
-// Halaman login admin (form password)
-Route::get('/admin', function () {
-    return view('chat.admin_login');
-});
-
-// Proses login admin (cek password)
+Route::get('/admin', fn() => view('chat.admin_login'));
 Route::post('/admin/login', function (Request $request) {
     if ($request->password === 'adminkuat123') {
         session(['admin_authenticated' => true]);
@@ -115,44 +160,17 @@ Route::post('/admin/login', function (Request $request) {
     }
     return back()->with('error', 'Password salah');
 });
-
-// Halaman chat admin (hanya jika sudah login)
 Route::get('/admin/chat', function () {
     if (!session('admin_authenticated')) {
         abort(403, 'Unauthorized');
     }
     return app(ChatController::class)->adminView();
 });
+Route::get('/admin/chat', [ChatController::class, 'adminChat'])->middleware(['auth', 'verified']);
 
-// Chat message routes
-Route::post('/send-admin', [ChatController::class, 'sendAdmin']);
-Route::get('/messages', [ChatController::class, 'getMessages']);
-
-// USER
-Route::get('/shu', [SHUController::class, 'index'])->name('shu.index');
-Route::post('/shu/hitung', [SHUController::class, 'hitung'])->name('shu.hitung');
-
-// ADMIN
-Route::get('/admin/shu', [SHUAdminController::class, 'index'])->name('admin.shu.index');
-
-// 👤 Anggota untuk User
-Route::prefix('user')->name('user.')->group(function () {
-    Route::resource('anggota', AnggotaController::class);
-    Route::get('/', [UserController::class, 'index'])->name('index');
-});
-
-// 📤 Kas Keluar
-Route::get('/kas-keluar', [KasKeluarController::class, 'index'])->name('kas-keluar.index');
-
-// 🧑‍💼 ROUTE UNTUK ADMIN
-Route::prefix('admin')->name('admin.')->group(function () {
-    Route::get('/', [AdminController::class, 'index'])->name('index');
-    Route::resource('kas_masuk', KasMasukAdminController::class);
-    Route::resource('anggota', AnggotaAdminController::class);
-});
-Route::get('/kas_masuk/create', [AnggotaController::class, 'create'])->name('kas_masuk.create');
-
-
-Route::resource('anggota', AnggotaController::class);
-
-Route::get('/admin/kas_masuk', [KasMasukAdminController::class, 'index'])->name('admin.kas_masuk.index');
+/*
+|--------------------------------------------------------------------------
+| ROUTE DEFAULT LARAVEL BREEZE / FORTIFY
+|--------------------------------------------------------------------------
+*/
+require __DIR__.'/auth.php';

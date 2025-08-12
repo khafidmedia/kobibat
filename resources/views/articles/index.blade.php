@@ -84,7 +84,7 @@
                                         class="btn btn-primary btn-sm flex-fill">Lihat</a>
                                 </div>
                             @endauth
-                            
+
                         </div>
                     </div>
                 </div>

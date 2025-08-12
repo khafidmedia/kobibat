@@ -7,7 +7,7 @@
                 <a href="#" title="Profile" class="hover:text-blue-500">👤</a>
                 <a href="#" title="Stats" class="hover:text-blue-500">📊</a>
                 <a href="#" title="Help" class="hover:text-blue-500">❓</a>
-                <a href="#" title="Settings" class="hover:text-blue-500">⚙</a>
+                <a href="#" title="Settings" class="hover:text-blue-500">⚙️</a>
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
                     <button class="hover:text-red-500" title="Logout">⏻</button>

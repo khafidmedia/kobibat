@@ -103,7 +103,7 @@
 </head>
 <body>
 
-  <!-- ✅ Navigasi Publik -->
+  {{-- <!-- ✅ Navigasi Publik -->
   <nav class="navbar navbar-expand-lg navbar-light bg-light px-4 shadow-sm">
     <a class="navbar-brand fw-bold text-primary" href="{{ url('/') }}">Koperasi Bisa-Hebat</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
@@ -124,7 +124,7 @@
         </li>
       </ul>
     </div>
-  </nav>
+  </nav> --}}
 
   <!-- ✅ Konten Login -->
   <div class="container-fluid">
@@ -164,4 +164,4 @@
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-</
+</html>

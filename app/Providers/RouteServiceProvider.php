@@ -17,7 +17,14 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @var string
      */
-    public const HOME = '/';
+    public static function redirectBasedOnRole()
+{
+    $user = auth()->user();
+    if ($user->role === 'admin') {
+        return '/admin';
+    }
+    return '/dashboard';
+}
 
     /**
      * Define your route model bindings, pattern filters, and other route configuration.

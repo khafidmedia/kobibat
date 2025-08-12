@@ -11,15 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('users', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->rememberToken();
-            $table->timestamps();
-        });
+       Schema::create('users', function (Blueprint $table) {
+    $table->id();
+    $table->string('name');
+    $table->string('email')->unique();
+    $table->timestamp('email_verified_at')->nullable();
+    $table->string('password');
+    $table->string('location')->nullable();            // 🧭 Lokasi
+    $table->string('phone')->nullable();               // 📞 Nomor Telepon
+    $table->string('profile_photo_path')->nullable();  // 🖼️ Foto Profil
+    $table->rememberToken();
+    $table->timestamps();
+});
     }
 
     /**

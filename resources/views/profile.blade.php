@@ -103,7 +103,6 @@
 <div class="sidebar">
     <div class="sidebar-section">
         <h6>Halaman Profil</h6>
-        <a href="{{ route('dashboard') }}"><i class="bi bi-house-door-fill"></i> Dashboard</a>
         <a href="{{ route('profile') }}"><i class="bi bi-person-circle"></i> Profil</a>
         <a href="{{ route('logout') }}"
            onclick="event.preventDefault(); document.getElementById('logout-form').submit();">

@@ -7,33 +7,24 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     /**
-     * Run the migrations.
+     * Jalankan migrasi: tambahkan kolom location, phone, dan profile_photo_path ke tabel users.
      */
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
             $table->string('location')->nullable()->after('email');
             $table->string('phone')->nullable()->after('location');
-            $table->string('profile_photo_path')->nullable()->after('phone');
+            $table->string('profile_photo_path')->nullable()->after('phone'); // ✅ tambahkan kolom yang benar
         });
     }
 
     /**
-     * Reverse the migrations.
+     * Rollback migrasi: hapus kolom yang ditambahkan.
      */
     public function down(): void
-{
-    Schema::table('users', function (Blueprint $table) {
-        if (Schema::hasColumn('users', 'location')) {
-            $table->dropColumn('location');
-        }
-        if (Schema::hasColumn('users', 'phone')) {
-            $table->dropColumn('phone');
-        }
-        if (Schema::hasColumn('users', 'profile_photo_path')) {
-            $table->dropColumn('profile_photo_path');
-        }
-    });
-}
-
+    {
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn(['location', 'phone', 'profile_photo_path']);
+        });
+    }
 };

@@ -21,34 +21,39 @@ class ProfileController extends Controller
     }
 
     // Perbarui profil user
-    public function update(ProfileUpdateRequest $request): RedirectResponse
-    {
-        $user = $request->user();
-        $user->fill($request->validated());
+   public function update(ProfileUpdateRequest $request): RedirectResponse
+{
+    $user = $request->user();
 
-        // Tambahan data opsional
-        $user->location = $request->input('location');
-        $user->phone = $request->input('phone');
+    // Isi data dari request yang sudah divalidasi
+    $user->fill($request->validated());
 
-        // Upload foto profil jika tersedia
-        if ($request->hasFile('profile_photo')) {
-            if ($user->profile_photo_path && Storage::disk('public')->exists($user->profile_photo_path)) {
-                Storage::disk('public')->delete($user->profile_photo_path);
-            }
+    // Tambahan data opsional
+    $user->location = $request->input('location');
+    $user->phone = $request->input('phone');
 
-            $path = $request->file('profile_photo')->store('profile_photos', 'public');
-            $user->profile_photo_path = $path;
+    // Upload foto profil jika ada
+    if ($request->hasFile('profile_photo')) {
+        // Hapus foto lama jika ada
+        if ($user->profile_photo_path && Storage::disk('public')->exists($user->profile_photo_path)) {
+            Storage::disk('public')->delete($user->profile_photo_path);
         }
 
-        // Reset verifikasi email jika berubah
-        if ($user->isDirty('email')) {
-            $user->email_verified_at = null;
-        }
-
-        $user->save();
-
-        return Redirect::route('profile.edit')->with('status', 'profile-updated');
+        // Simpan foto baru
+        $path = $request->file('profile_photo')->store('profile_photos', 'public');
+        $user->profile_photo_path = $path;
     }
+
+    // Reset verifikasi email jika email berubah
+    if ($user->isDirty('email')) {
+        $user->email_verified_at = null;
+    }
+
+    $user->save();
+
+    return Redirect::route('profile.edit')->with('status', 'Profile berhasil diperbarui.');
+}
+
 
     // Hapus akun user
     public function destroy(Request $request): RedirectResponse
