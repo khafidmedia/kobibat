@@ -12,6 +12,7 @@ return new class extends Migration
     public function up(): void
     {
        Schema::create('anggotas_admins', function (Blueprint $table) {
+     $table->engine = 'InnoDB'; 
     $table->id();
     $table->string('nama');
     $table->string('no_hp')->nullable();

@@ -6,25 +6,33 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Jalankan migrasi: tambahkan kolom location, phone, dan profile_photo_path ke tabel users.
-     */
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('location')->nullable()->after('email');
-            $table->string('phone')->nullable()->after('location');
-            $table->string('profile_photo_path')->nullable()->after('phone'); // ✅ tambahkan kolom yang benar
+            if (!Schema::hasColumn('users', 'location')) {
+                $table->string('location')->nullable()->after('email');
+            }
+            if (!Schema::hasColumn('users', 'phone')) {
+                $table->string('phone')->nullable()->after('location');
+            }
+            if (!Schema::hasColumn('users', 'profile_photo_path')) {
+                $table->string('profile_photo_path')->nullable()->after('phone');
+            }
         });
     }
 
-    /**
-     * Rollback migrasi: hapus kolom yang ditambahkan.
-     */
     public function down(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn(['location', 'phone', 'profile_photo_path']);
+            if (Schema::hasColumn('users', 'location')) {
+                $table->dropColumn('location');
+            }
+            if (Schema::hasColumn('users', 'phone')) {
+                $table->dropColumn('phone');
+            }
+            if (Schema::hasColumn('users', 'profile_photo_path')) {
+                $table->dropColumn('profile_photo_path');
+            }
         });
     }
 };

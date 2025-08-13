@@ -6,23 +6,23 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
+    /**
+     * Run the migrations.
+     */
     public function up(): void
     {
-        Schema::create('kas_masuks', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('anggota_id')
-                  ->constrained('anggotas') // pastikan tabelnya bernama anggotas
-                  ->onDelete('cascade');
-            $table->date('tanggal');
-            $table->string('sumber');
-            $table->decimal('jumlah', 12, 2);
-            $table->text('keterangan')->nullable();
-            $table->timestamps();
+        Schema::create('password_reset_tokens', function (Blueprint $table) {
+            $table->string('email')->primary();
+            $table->string('token');
+            $table->timestamp('created_at')->nullable();
         });
     }
 
+    /**
+     * Reverse the migrations.
+     */
     public function down(): void
     {
-        Schema::dropIfExists('kas_masuks');
+        Schema::dropIfExists('password_reset_tokens');
     }
 };

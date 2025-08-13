@@ -10,7 +10,7 @@ class Simpanan extends Model
     use HasFactory;
 
     // Tambahkan ini agar Laravel tahu nama tabelnya bukan 'simpanans'
-    protected $table = 'simpanan';
+    protected $table = 'simpanans';
 
     
     protected $fillable = [
