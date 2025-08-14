@@ -230,7 +230,7 @@
             <h2>KOBIBAT</h2>
             <h5>" Koperasi Bisa Hebat "</h5>
         </div>
-        <a href="#">Dashboard</a>
+        <a href="{{ route('dashboard') }}">Dashboard</a>
         <a href="{{ route('articles.index') }}">Artikel</a>
         <a href="{{ route('pendaftaran.index') }}">Kelola Anggota</a>
         <a href="{{ route('admin.simpanan') }}">Simpanan</a>
@@ -238,7 +238,7 @@
         <a href="{{ route('chat.user') }}">Live Chat</a>
         <a href="{{ route('admin.shu.index') }}">SHU</a>
         <a href="{{ route('admin.kas_masuk.index') }}">Kas Masuk</a>
-        
+
     </div>
 
     <div class="main">
@@ -248,7 +248,10 @@
                 <h1>Dashboard Admin</h1>
             </div>
             @csrf
-            <button class="logout-btn" type="submit">Logout</button>
+            <form action="{{ route('admin.logout') }}" method="POST" style="margin:0;">
+                @csrf
+                <button class="logout-btn" type="submit">Logout</button>
+            </form>
         </div>
 
 

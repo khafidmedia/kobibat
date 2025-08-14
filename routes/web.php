@@ -24,6 +24,7 @@ use App\Http\Controllers\Admin\{
     AdminController
 };
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\Auth\LoginController;
 
 /*
 |--------------------------------------------------------------------------
@@ -67,15 +68,27 @@ Route::get('/messages', [ChatController::class, 'getMessages']);
 | ROUTE USER (HARUS LOGIN)
 |--------------------------------------------------------------------------
 */
+// Form login admin
+Route::get('/admin/login', function () {
+    return view('admin.login');
+})->name('admin.login');
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    // Dashboard
+    // Dashboard Admin
     Route::get('/dashboard', fn() => view('dashboard'))->name('dashboard');
+    // Home User
     Route::get('/user/home', fn() => view('layouts.user'))->name('layouts.user');
 
     // Profile
     Route::get('/profile', [ProfileController::class, 'show'])->name('profile');
 });
+
+// admin
+Route::post('/admin/logout', [App\Http\Controllers\Auth\LoginController::class, 'logout'])->name('admin.logout');
+// user
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -173,4 +186,4 @@ Route::get('/admin/chat', [ChatController::class, 'adminChat'])->middleware(['au
 | ROUTE DEFAULT LARAVEL BREEZE / FORTIFY
 |--------------------------------------------------------------------------
 */
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

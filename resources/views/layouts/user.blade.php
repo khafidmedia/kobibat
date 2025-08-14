@@ -59,7 +59,18 @@
                     <li class="nav-item"><a class="nav-link" href="{{ url('/simpanan') }}">Simpan</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ url('/user/pinjaman/ajukan') }}">Pinjaman</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ url('/anggota/index') }}">Kas Masuk</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ route('login.custom') }}">Login User</a></li>
+                  @auth
+            <li class="nav-item">
+                <form action="{{ route('logout') }}" method="POST">
+                    @csrf
+                    <button type="submit" class="btn btn-link nav-link" style="border:none; background:none; padding:0;">
+                        Logout
+                    </button>
+                </form>
+            </li>
+        @else
+            <li class="nav-item"><a class="nav-link" href="{{ route('login.custom') }}">Login User</a></li>
+        @endauth
 
                     <!-- Live Chat dinamis -->
                     @auth
@@ -78,7 +89,7 @@
 
             <!-- LOGIN -->
             <div class="d-none d-lg-block">
-                <a href="{{ url('/dashboard') }}" class="btn btn-primary">Login Admin</a>
+                <a href="{{ url('/admin/login') }}" class="btn btn-primary">Login Admin</a>
             </div>
         </div>
     </nav>
