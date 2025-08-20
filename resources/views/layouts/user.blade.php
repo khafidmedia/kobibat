@@ -36,10 +36,11 @@
     </style>
 </head>
 
-<body>
-    <!-- ✅ Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom shadow-sm w-100">
+<body style="padding-top: 70px;">
+    <!-- ✅ Navbar Fixed -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom shadow-sm w-100 fixed-top">
         <div class="container-fluid px-5 position-relative">
+
             <!-- LOGO + NAMA -->
             <a class="navbar-brand d-flex align-items-center fw-bold text-primary" href="#">
                 <img src="{{ asset('LOGO_SMK.png') }}" alt="Logo" class="navbar-logo">
@@ -54,41 +55,64 @@
             <!-- MENU -->
             <div class="collapse navbar-collapse justify-content-center" id="navbarContent">
                 <ul class="navbar-nav navbar-center gap-3">
-                    <li class="nav-item"><a class="nav-link" href="{{ route('articles.index') }}">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ url('/shu') }}">SHU</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ url('/simpanan') }}">Simpan</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ url('/user/pinjaman/ajukan') }}">Pinjaman</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ url('/anggota/index') }}">Kas Masuk</a></li>
-                  @auth
-            <li class="nav-item">
-                <form action="{{ route('logout') }}" method="POST">
-                    @csrf
-                    <button type="submit" class="btn btn-link nav-link" style="border:none; background:none; padding:0;">
-                        Logout
-                    </button>
-                </form>
-            </li>
-        @else
-            <li class="nav-item"><a class="nav-link" href="{{ route('login.custom') }}">Login User</a></li>
-        @endauth
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('articles.index') }}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url('/shu') }}">SHU</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url('/simpanan') }}">Simpan</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url('/user/pinjaman/ajukan') }}">Pinjaman</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url('/anggota/index') }}">Kas Masuk</a>
+                    </li>
+
+                    @auth
+                        {{-- Logout button bisa aktif di sini --}}
+                    @else
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('login.custom') }}">Login User</a>
+                        </li>
+                    @endauth
 
                     <!-- Live Chat dinamis -->
                     @auth
                         @if (Auth::user()->role === 'admin')
-                            <li class="nav-item"><a class="nav-link" href="{{ url('/admin/chat') }}">Live Chat Admin</a>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('chat.admin') }}">Live Chat Admin</a>
                             </li>
                         @else
-                            <li class="nav-item"><a class="nav-link" href="{{ url('/chat/user') }}">Live Chat</a></li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('chat.user') }}">Live Chat</a>
+                            </li>
                         @endif
+                    @else
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('chat.user') }}">Live Chat</a>
+                        </li>
                     @endauth
 
-                    <li class="nav-item"><a class="nav-link" href="{{ route('profile') }}">Profile User</a></li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('profile') }}">Profile User</a>
+                    </li>
                 </ul>
             </div>
 
+            <!-- LOGIN & LOGOUT (pojok kanan) -->
+            <div class="d-none d-lg-flex align-items-center gap-2">
+                @auth
+                    <form action="{{ route('logout') }}" method="POST" class="mb-0">
+                        @csrf
+                        <button type="submit" class="btn btn-link text-danger fw-bold" style="text-decoration:none;">
+                            Logout
+                        </button>
+                    </form>
+                @endauth
 
-            <!-- LOGIN -->
-            <div class="d-none d-lg-block">
                 <a href="{{ url('/admin/login') }}" class="btn btn-primary">Login Admin</a>
             </div>
         </div>

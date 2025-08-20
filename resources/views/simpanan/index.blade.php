@@ -50,11 +50,11 @@
     }
 </style>
 
-<h4 class="mb-3 heading-custom">🔍 Cek Simpanan Anda</h4>
+<h4 class="mb-3 heading-custom"> Cek Simpanan Anda</h4>
 
 <div class="d-flex justify-content-between align-items-center mb-3" style="max-width: 100%;">
     {{-- Tombol Tambah --}}
-    <a href="{{ route('simpanan.create') }}" class="btn-add">➕ Tambah Simpanan</a>
+    <a href="{{ route('simpanan.create') }}" class="btn-add"> Tambah Simpanan</a>
 
     {{-- Form Pencarian --}}
     <form method="GET" id="formCari">
@@ -63,7 +63,7 @@
             @if(request('nama'))
                 <button type="button" class="btn btn-outline-secondary" onclick="clearNamaInput()" title="Hapus">❌</button>
             @endif
-            <button class="btn btn-primary" type="submit">🔍 Cari</button>
+            <button class="btn btn-primary" type="submit"> Cari</button>
         </div>
     </form>
 </div>
@@ -118,7 +118,7 @@
         </div>
     @else
         <div class="alert alert-warning">
-            📭 Belum ada simpanan yang dibuat.
+             Belum ada simpanan yang dibuat.
         </div>
     @endif
 @endif

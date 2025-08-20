@@ -8,19 +8,33 @@ use Illuminate\Support\Facades\Storage;
 
 class ArticleController extends Controller
 {
+    public function __construct()
+    {
+        // Login wajib untuk semua kecuali index, show, like
+        $this->middleware('auth')->except(['index', 'show', 'like']);
+    }
+
     public function index()
     {
         $articles = Article::latest()->get();
+
+        if (auth()->check() && auth()->user()->role === 'admin') {
+            return view('admin.articles.index', compact('articles'));
+        }
+
         return view('articles.index', compact('articles'));
     }
 
     public function create()
     {
-        return view('articles.create');
+        $this->authorizeAdmin();
+        return view('admin.articles.create');
     }
 
     public function store(Request $request)
     {
+        $this->authorizeAdmin();
+
         $request->validate([
             'title' => 'required',
             'description' => 'required',
@@ -44,11 +58,14 @@ class ArticleController extends Controller
 
     public function edit(Article $article)
     {
-        return view('articles.edit', compact('article'));
+        $this->authorizeAdmin();
+        return view('admin.articles.edit', compact('article'));
     }
 
     public function update(Request $request, Article $article)
     {
+        $this->authorizeAdmin();
+
         $request->validate([
             'title' => 'required',
             'description' => 'required',
@@ -59,14 +76,16 @@ class ArticleController extends Controller
         $data = $request->only(['title', 'description']);
 
         if ($request->hasFile('photo')) {
-            if ($article->photo)
+            if ($article->photo) {
                 Storage::delete('public/' . $article->photo);
+            }
             $data['photo'] = $request->file('photo')->store('photos', 'public');
         }
 
         if ($request->hasFile('audio')) {
-            if ($article->audio)
+            if ($article->audio) {
                 Storage::delete('public/' . $article->audio);
+            }
             $data['audio'] = $request->file('audio')->store('audios', 'public');
         }
 
@@ -76,10 +95,15 @@ class ArticleController extends Controller
 
     public function destroy(Article $article)
     {
-        if ($article->photo)
+        $this->authorizeAdmin();
+
+        if ($article->photo) {
             Storage::delete('public/' . $article->photo);
-        if ($article->audio)
+        }
+        if ($article->audio) {
             Storage::delete('public/' . $article->audio);
+        }
+
         $article->delete();
         return redirect()->route('articles.index')->with('success', 'Artikel dihapus.');
     }
@@ -88,7 +112,7 @@ class ArticleController extends Controller
     {
         if (!auth()->check() || auth()->user()->role !== 'admin') {
             $articleKey = 'viewed_article_' . $article->id;
-            $viewExpiration = now()->addHours(3); // durasi delay view
+            $viewExpiration = now()->addHours(3);
 
             if (!session()->has($articleKey) || now()->gt(session($articleKey))) {
                 $article->increment('views');
@@ -96,6 +120,12 @@ class ArticleController extends Controller
             }
         }
 
+        // Admin melihat halaman show di admin layout
+        if (auth()->check() && auth()->user()->role === 'admin') {
+            return view('admin.articles.show', compact('article'));
+        }
+
+        // User melihat halaman show di user layout
         return view('articles.show', compact('article'));
     }
 
@@ -117,4 +147,10 @@ class ArticleController extends Controller
         return back()->with('info', 'Admin tidak dapat menyukai artikel.');
     }
 
+    private function authorizeAdmin()
+    {
+        if (!auth()->check() || auth()->user()->role !== 'admin') {
+            abort(403, 'Akses ditolak. Hanya admin yang dapat melakukan aksi ini.');
+        }
+    }
 }

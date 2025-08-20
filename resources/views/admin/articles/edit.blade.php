@@ -1,10 +1,10 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 
 @section('content')
 <div class="container">
     <h3>Edit Artikel</h3>
 
-    <form action="{{ route('articles.update', $article->id) }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ route('admin.articles.update', $article->id) }}" method="POST" enctype="multipart/form-data">
         @csrf @method('PUT')
 
         <input class="form-control mb-2" type="text" name="title" value="{{ $article->title }}" required>

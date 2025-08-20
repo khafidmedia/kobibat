@@ -5,22 +5,40 @@ namespace App\Http\Controllers;
 use App\Models\Message;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Auth;
 
 class ChatController extends Controller
 {
     // Tampilkan tampilan user
-    public function userView() {
+    public function userView()
+    {
         return view('chat.user');
     }
 
-    // Tampilkan tampilan admin
-    public function adminView() {
-        return view('chat.admin');
+    // Tampilkan tampilan admin (khusus role admin)
+    public function adminChat()
+    {
+        if (Auth::check() && Auth::user()->role === 'admin') {
+            return view('chat.admin');
+        }
+        abort(403, 'Akses ditolak'); // kalau bukan admin
+    }
+
+    // Ambil semua pesan
+    public function getMessages()
+    {
+        $messages = Message::orderBy('created_at', 'asc')->get();
+        return response()->json($messages);
     }
 
     // Kirim pesan dari user
-    public function sendUser(Request $request) {
-        // Buat token unik per user (tanpa login)
+    public function sendUser(Request $request)
+    {
+        $request->validate([
+            'message' => 'required|string|max:1000'
+        ]);
+
+        // Bikin token unik per session user
         if (!session()->has('user_token')) {
             session(['user_token' => Str::random(40)]);
         }
@@ -31,27 +49,30 @@ class ChatController extends Controller
             'user_token' => session('user_token'),
         ]);
 
-        return back();
+        return response()->json(['status' => 'ok']);
     }
 
     // Kirim pesan dari admin
-    public function sendAdmin(Request $request) {
-        Message::create([
-            'sender' => 'admin',
-            'message' => $request->message,
-        ]);
+    public function sendAdmin(Request $request)
+    {
+        if (Auth::check() && Auth::user()->role === 'admin') {
+            $request->validate([
+                'message' => 'required|string|max:1000'
+            ]);
 
-        return back();
-    }
+            Message::create([
+                'sender' => 'admin',
+                'message' => $request->message,
+            ]);
 
-    // Ambil semua pesan (untuk auto-load)
-    public function getMessages() {
-        $messages = Message::orderBy('created_at')->get();
-        return response()->json($messages);
+            return response()->json(['status' => 'ok']);
+        }
+        return abort(403, 'Akses ditolak');
     }
 
     // Hapus pesan (khusus user sendiri)
-    public function deleteUserMessage($id) {
+    public function deleteUserMessage($id)
+    {
         $message = Message::findOrFail($id);
         if ($message->sender === 'user' && $message->user_token === session('user_token')) {
             $message->delete();
@@ -61,7 +82,8 @@ class ChatController extends Controller
     }
 
     // Update pesan (khusus user sendiri)
-    public function updateUserMessage(Request $request, $id) {
+    public function updateUserMessage(Request $request, $id)
+    {
         $message = Message::findOrFail($id);
         if ($message->sender === 'user' && $message->user_token === session('user_token')) {
             $message->message = $request->message;

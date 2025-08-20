@@ -89,7 +89,7 @@
 </head>
 <body>
   <div class="left">
-    <img src="{{ asset('smk.jpg') }}" alt="Logo" style="width:150px; margin-bottom: 30px;">
+    <img src="{{ asset('LOGO_SMK.png') }}" alt="Logo" style="width:150px; margin-bottom: 30px;">
     <h2>Login Administrator</h2>
     <p>Selamat Datang Admin</p>
     <form method="POST" action="{{ route('login') }}">

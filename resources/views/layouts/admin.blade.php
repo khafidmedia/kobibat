@@ -87,14 +87,14 @@
                 <img src="{{ asset('images/logo-SMK.png') }}" alt="Logo Koperasi" class="header-logo">
                 <h1 class="h5 m-0">Dashboard Admin</h1>
             </div>
-            <a href="{{ route('logout') }}"
+            {{-- <a href="{{ route('logout') }}"
                onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
                class="logout-btn">
                 <i class="bi bi-box-arrow-right"></i> Logout
             </a>
             <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                 @csrf
-            </form>
+            </form> --}}
         </div>
 
         {{-- Konten --}}

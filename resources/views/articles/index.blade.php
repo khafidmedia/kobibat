@@ -34,17 +34,15 @@
                                     $liked =
                                         session()->has('liked_article_' . $article->id) &&
                                         now()->lt(session('liked_article_' . $article->id));
-                                    $isAdmin = auth()->check() && auth()->user()->role === 'admin';
                                 @endphp
 
                                 <form action="{{ route('articles.like', $article->id) }}" method="POST">
                                     @csrf
                                     <button class="btn btn-outline-danger btn-sm" type="submit"
-                                        {{ $liked || $isAdmin ? 'disabled' : '' }}>
+                                        {{ $liked ? 'disabled' : '' }}>
                                         ❤️ {{ $article->likes ?? 0 }}
                                     </button>
                                 </form>
-
                             </div>
 
                             {{-- Deskripsi --}}
@@ -57,34 +55,11 @@
                                 </audio>
                             @endif
 
-                            <!-- Tombol Aksi (Edit, Hapus) hanya untuk admin -->
-                            @auth
-                                @if (auth()->user()->role === 'admin')
-                                    <div class="d-flex justify-content-between gap-2 mt-auto">
-                                        <a href="{{ route('articles.show', $article->id) }}"
-                                            class="btn btn-primary btn-sm flex-fill">Lihat</a>
-                                        <a href="{{ route('articles.edit', $article->id) }}"
-                                            class="btn btn-warning btn-sm flex-fill">Edit</a>
-                                        <form method="POST" action="{{ route('articles.destroy', $article->id) }}"
-                                            class="flex-fill">
-                                            @csrf @method('DELETE')
-                                            <button onclick="return confirm('Yakin hapus?')"
-                                                class="btn btn-danger btn-sm w-100">Hapus</button>
-                                        </form>
-                                    </div>
-                                @else
-                                    <div class="d-flex justify-content-between gap-2 mt-auto">
-                                        <a href="{{ route('articles.show', $article->id) }}"
-                                            class="btn btn-primary btn-sm flex-fill">Lihat</a>
-                                    </div>
-                                @endif
-                            @else
-                                <div class="d-flex justify-content-between gap-2 mt-auto">
-                                    <a href="{{ route('articles.show', $article->id) }}"
-                                        class="btn btn-primary btn-sm flex-fill">Lihat</a>
-                                </div>
-                            @endauth
-
+                            <!-- Tombol hanya Lihat untuk semua user -->
+                            <div class="d-flex justify-content-between gap-2 mt-auto">
+                                <a href="{{ route('articles.show', $article->id) }}"
+                                    class="btn btn-primary btn-sm flex-fill">Lihat</a>
+                            </div>
                         </div>
                     </div>
                 </div>

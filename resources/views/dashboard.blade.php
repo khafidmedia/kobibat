@@ -235,10 +235,9 @@
         <a href="{{ route('pendaftaran.index') }}">Kelola Anggota</a>
         <a href="{{ route('admin.simpanan') }}">Simpanan</a>
         <a href="{{ route('admin.pinjaman.index') }}">Pinjaman</a>
-        <a href="{{ route('chat.user') }}">Live Chat</a>
+        <a href="{{ route('chat.admin') }}">Live Chat</a>
         <a href="{{ route('admin.shu.index') }}">SHU</a>
         <a href="{{ route('admin.kas_masuk.index') }}">Kas Masuk</a>
-
     </div>
 
     <div class="main">
