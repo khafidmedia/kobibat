@@ -11,14 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-         Schema::create('anggota_admins', function (Blueprint $table) {
-        $table->engine = 'InnoDB'; 
-        $table->id();
-        $table->string('nama');
-        $table->string('alamat')->nullable();
-        $table->string('telepon')->nullable();
-        $table->timestamps();
-    });;
+        Schema::create('anggota', function (Blueprint $table) {
+            $table->id();
+            $table->timestamps();
+        });
     }
 
     /**
@@ -26,6 +22,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('anggota_admins');
+        Schema::dropIfExists('anggota');
     }
 };

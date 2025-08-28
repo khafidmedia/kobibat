@@ -19,7 +19,7 @@
         <div style="background-color: #f8f9fa; border-radius: 12px; padding: 20px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); text-align: center;">
             <h3 style="margin-bottom: 10px;">Kas Masuk</h3>
             <p style="color: #555;">Lihat dan tambah data kas masuk.</p>
-            <a href="{{ route('kas-masuk.index') }}" style="display: inline-block; margin-top: 12px; padding: 8px 16px; background-color: #28a745; color: white; text-decoration: none; border-radius: 6px;">Kelola</a>
+            <a href="{{ route('anggota.index') }}" style="display: inline-block; margin-top: 12px; padding: 8px 16px; background-color: #28a745; color: white; text-decoration: none; border-radius: 6px;">Kelola</a>
         </div>
 
     </div>

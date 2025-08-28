@@ -66,10 +66,9 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url('/user/pinjaman/ajukan') }}">Pinjaman</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url('/anggota/index') }}">Kas Masuk</a>
-                    </li>
+<li class="nav-item">
+    <a class="nav-link" href="{{ route('user.anggota.index') }}">Kas Masuk</a>
+</li>
 
                     @auth
                         {{-- Logout button bisa aktif di sini --}}

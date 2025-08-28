@@ -11,11 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('messages', function (Blueprint $table) {
-            $table->id();
-    $table->string('sender'); // admin / user
-    $table->text('message');
-    $table->timestamps();
+        Schema::table('kas_masuks', function (Blueprint $table) {
+            //
         });
     }
 
@@ -24,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('messages');
+        Schema::table('kas_masuks', function (Blueprint $table) {
+            //
+        });
     }
 };

@@ -175,11 +175,46 @@ Route::prefix('admin')->name('admin.')->group(function () {
 // SHU Admin
 Route::get('/admin/shu', [SHUAdminController::class, 'index'])->name('admin.shu.index');
 
-// Kas Masuk Admin
-Route::get('/admin/kas-masuk', [KasMasukController::class, 'index'])->name('admin.kas_masuk.index');
 
-// Anggota Admin
-Route::resource('admin/anggota', AnggotaAdminController::class);
+// ================== ADMIN ==================
+
+// Kas Masuk Admin (CRUD lengkap: index, create, store, edit, update, destroy, show)
+Route::resource('admin/kas-masuk', KasMasukAdminController::class)
+    ->names('admin.kas-masuk');
+
+// Jika hanya ingin route khusus index (sebenarnya sudah termasuk di atas, jadi opsional)
+Route::get('admin/kas-masuk', [KasMasukAdminController::class, 'index'])
+    ->name('admin.kas-masuk.index');
+
+// Anggota Admin (CRUD)
+Route::resource('admin/anggota', AnggotaAdminController::class)
+    ->names('admin.anggota');
+
+// Lcsim (pakai controller)
+Route::get('admin/lcsim.php', [LcsimController::class, 'index'])
+    ->name('admin.lcsim');
+    use App\Models\Anggota;
+
+Route::get('/cek-anggota', function () {
+    return Anggota::all();
+});
+
+
+// Atau jika hanya ingin load view langsung tanpa controller:
+// Route::get('admin/lcsim.php', function () {
+//     return view('admin.lcsim');
+// })->name('admin.lcsim');
+// })->name('admin.lcsim');
+
+// ================== USER ==================
+
+// Kas Masuk User
+Route::get('/user/kas-masuk', [KasMasukController::class, 'index'])
+    ->name('user.kas-masuk.index');
+
+// Anggota User
+Route::get('/anggota', [AnggotaController::class, 'index'])
+    ->name('user.anggota.index');
 
 // Dashboard Admin
 Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
@@ -561,3 +596,4 @@ require __DIR__ . '/auth.php';
 // |--------------------------------------------------------------------------
 // */
 // require __DIR__ . '/auth.php';       perbaiki code tersebut agar fitur kas masuk jadi dan terpisah untuk admin dan user  
+ 

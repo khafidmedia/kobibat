@@ -7,12 +7,25 @@ use Illuminate\Database\Eloquent\Model;
 
 class Anggota extends Model
 {
-    use HasFactory; // ← ini penting untuk mendukung fitur factory & testing
+    use HasFactory;
 
-    protected $fillable = ['nama', 'no_hp', 'alamat', 'status', 'nominal'];
+    // Kalau tabelmu namanya 'anggotas', ini sudah benar
+    protected $table = 'anggotas';
 
-    public function kasMasuks()
+    // Field yang bisa diisi mass assignment
+    protected $fillable = [
+        'nama',
+        'email',
+        'alamat',
+        'telepon',
+    ];
+
+    /**
+     * Relasi ke KasMasuk
+     * Satu anggota bisa punya banyak kas masuk
+     */
+    public function kasMasuk()
     {
-        return $this->hasMany(KasMasuk::class);
+        return $this->hasMany(KasMasuk::class, 'anggota_id');
     }
 }

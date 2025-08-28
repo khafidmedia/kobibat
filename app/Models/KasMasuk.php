@@ -2,26 +2,22 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class KasMasuk extends Model
 {
-    use HasFactory;
-
+    // Nama kolom yang bisa diisi mass-assignment
     protected $fillable = [
         'tanggal',
-        'sumber',
+        'anggota_id',
+        'sumber',       // ✅ sesuaikan dengan controller
         'jumlah',
-        'keterangan',
-        'anggota_id' // jangan lupa tambahkan field relasi
+        'keterangan'
     ];
 
-    // Relasi ke model Anggota
-   
+    // Relasi ke tabel anggota
     public function anggota()
     {
         return $this->belongsTo(Anggota::class);
     }
 }
-
