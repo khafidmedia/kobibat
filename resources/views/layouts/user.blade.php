@@ -66,9 +66,9 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url('/user/pinjaman/ajukan') }}">Pinjaman</a>
-<li class="nav-item">
-    <a class="nav-link" href="{{ route('user.anggota.index') }}">Kas Masuk</a>
-</li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('user.anggota.index') }}">Kas Masuk</a>
+                    </li>
 
                     @auth
                         {{-- Logout button bisa aktif di sini --}}
@@ -82,7 +82,7 @@
                     @auth
                         @if (Auth::user()->role === 'admin')
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('chat.admin') }}">Live Chat Admin</a>
+                                <a class="nav-link" href="{{ route('chat.admin') }}">Live Chat</a>
                             </li>
                         @else
                             <li class="nav-item">
@@ -136,5 +136,4 @@
         }
     </script>
 </body>
-
 </html>

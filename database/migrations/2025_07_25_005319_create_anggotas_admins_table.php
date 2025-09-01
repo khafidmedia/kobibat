@@ -17,7 +17,8 @@ return new class extends Migration
     $table->string('nama');
     $table->string('no_hp')->nullable();
     $table->string('alamat')->nullable();
-    $table->string('status')->default('Aktif');
+    $table->string('status')->nullable();
+    // $table->string('status')->default('Aktif');
     $table->decimal('nominal', 15, 2)->default(0);
     $table->timestamps();
 });

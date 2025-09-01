@@ -12,7 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('anggotas', function (Blueprint $table) {
-            $table->integer('nominal')->default(0)->after('status');
+            $table->integer('nominal')->default(0);
+
+            // $table->integer('nominal')->default(0)->after('status');
         });
     }
 
